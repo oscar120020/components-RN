@@ -1,5 +1,7 @@
+/* eslint-disable no-extra-boolean-cast */
+import React, {useReducer,useEffect} from 'react';
 import {Theme} from '@react-navigation/native';
-import React, {useReducer} from 'react';
+import { useColorScheme } from 'react-native';
 import {ThemeContext} from './ThemeContext';
 import {themeReducer} from './themeReducer';
 
@@ -10,28 +12,28 @@ export interface ThemeState extends Theme {
 
 export const lightTheme: ThemeState = {
   currentTheme: 'light',
-  dividerColor: 'rgba(0,0,0,0.7)',
+  dividerColor: 'rgba(0,0,0,1)',
   dark: false,
   colors: {
-    primary: 'red',
+    primary: '#5856d6',
     background: 'white',
     card: 'green',
     text: 'black',
-    border: 'pink',
+    border: 'rgba(0,0,0,0.4)',
     notification: 'orange',
   },
 };
 
 export const darkTheme: ThemeState = {
-  currentTheme: 'light',
+  currentTheme: 'dark',
   dividerColor: 'rgba(0,0,0,0.7)',
-  dark: false,
+  dark: true,
   colors: {
     primary: 'red',
-    background: 'blue',
+    background: 'black',
     card: 'green',
     text: 'yellow',
-    border: 'pink',
+    border: 'rgba(255,255,255,0.4)',
     notification: 'orange',
   },
 };
@@ -40,7 +42,20 @@ interface Props {
   children: JSX.Element | JSX.Element[];
 }
 export const ThemeProvider = ({children}: Props) => {
+
+  const colorScheme = useColorScheme();
   const [theme, dispatch] = useReducer(themeReducer, lightTheme);
+
+  useEffect(() => {
+    if (!!colorScheme){
+      if (colorScheme === 'dark'){
+        setDarkTheme();
+      } else {
+        setLightTheme();
+      }
+    }
+  }, [colorScheme]);
+
 
   const setLightTheme = () => {
     dispatch({

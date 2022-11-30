@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
+import React, {useMemo, useState, useContext} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, {useMemo, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { ThemeContext } from '../context/themeContext/ThemeContext';
 import {styles} from '../theme/appTheme';
 
 interface Slide {
@@ -44,6 +45,7 @@ export const SlidesScreen = () => {
   const [slideIndex, setSlideIndex] = useState(0);
   const navigation = useNavigation<StackNavigationProp<any, any>>();
   const isLastSlide = useMemo(() => slideIndex !== items.length - 1, [slideIndex]);
+  const {theme: {colors}} = useContext(ThemeContext);
 
   const renderItem = (item: Slide) => {
     return (
@@ -62,11 +64,11 @@ export const SlidesScreen = () => {
           style={{
             ...styles.title,
             alignSelf: 'flex-start',
-            color: '#5856d6',
+            color: colors.primary,
           }}>
           {item.title}
         </Text>
-        <Text style={styles.text}>{item.desc}</Text>
+        <Text style={{...styles.text, color: colors.text}}>{item.desc}</Text>
       </View>
     );
   };
@@ -113,7 +115,7 @@ export const SlidesScreen = () => {
           disabled={isLastSlide}
           onPress={() => navigation.navigate('HomeScreen')}
         >
-          <Text style={{color: 'white', fontSize: 16}}>Entrar</Text>
+          <Text style={{color: colors.text, fontSize: 16}}>Entrar</Text>
           <Icon name="chevron-forward-outline" size={20} />
         </TouchableOpacity>
       </View>

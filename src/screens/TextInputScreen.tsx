@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { CustomSwitch } from '../components/CustomSwitch';
+import { ThemeContext } from '../context/themeContext/ThemeContext';
 import {useForm} from '../hooks/useForm';
 
 interface FormValues {
@@ -27,6 +28,8 @@ export const TextInputScreen = () => {
     isSubscribe: false,
   });
 
+  const {theme: {colors}} = useContext(ThemeContext);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -34,7 +37,7 @@ export const TextInputScreen = () => {
       <ScrollView>
         <View style={customStyles.container}>
           <TextInput
-            style={customStyles.input}
+            style={{...customStyles.input, borderColor: colors.border}}
             placeholder="Name"
             value={form.name}
             onChangeText={handleChange('name')}
@@ -44,7 +47,7 @@ export const TextInputScreen = () => {
           <TextInput
             style={{
               ...customStyles.input,
-              // ...styles.text,
+              borderColor: colors.border,
             }}
             placeholder="email"
             keyboardType="email-address"
@@ -53,16 +56,16 @@ export const TextInputScreen = () => {
             placeholderTextColor="#8a8a8a"
           />
           <View style={customStyles.sub} >
-            <Text style={{fontSize: 16, color: 'black'}} >Subscribirse</Text>
+            <Text style={{fontSize: 16, color: colors.text}} >Subscribirse</Text>
             <CustomSwitch isEnabled={form.isSubscribe} onChange={(value) => handleChange<boolean>('isSubscribe')(value)} />
           </View>
 
-          <Text style={customStyles.showInfo}>{JSON.stringify(form, null, 5)}</Text>
+          <Text style={{...customStyles.showInfo, color: colors.text}}>{JSON.stringify(form, null, 5)}</Text>
 
-          <Text style={customStyles.showInfo}>{JSON.stringify(form, null, 5)}</Text>
+          <Text style={{...customStyles.showInfo, color: colors.text}}>{JSON.stringify(form, null, 5)}</Text>
 
           <TextInput
-            style={customStyles.input}
+            style={{...customStyles.input, borderColor: colors.border}}
             placeholder="writte a number"
             keyboardType="phone-pad"
             value={form.phone}

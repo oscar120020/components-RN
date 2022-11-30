@@ -11,13 +11,12 @@ export const themeReducer = (
   switch (action.type) {
     case 'changeToDark':
       return {
-        ...state,
-
+        ...action.payload,
       };
 
     case 'changeToLight':
       return {
-        ...state,
+        ...action.payload,
       };
 
     default:
